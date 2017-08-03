@@ -1,16 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Win32;
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.Net;
+using System.Reflection;
+using System.Threading;
 
 namespace Nagoya_Monster
 {
     class Program
     {
-        static void Main(string[] args)
+        public static bool isDebugging = true;
+ 
+        private static void Main(string[] args)
         {
-            
+            Log.Add("Hello World");
         }
     }
 }
