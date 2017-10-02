@@ -58,6 +58,8 @@ namespace LogsReader
                         file.MoveTo(folderBrowserDialog.SelectedPath + @"\TaskRunnerExplorer\" + file.Name.Substring(0, file.Name.Length - 4) + ".png");
                 }
 
+                MessageBox.Show("Extracted with Success");
+
             }
         }
     }
